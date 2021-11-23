@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%   Solução da Eq. do Movimento do Exemplo 8 do Livro do Prof. Ilmar Santos
-% "Dinâmica de Sistemas Mecânicos" e Animação do Movimento da Partícula
+%   SoluÃ§Ã£o da Eq. do Movimento do Exemplo 8 do Livro do Prof. Ilmar Santos
+% "DinÃ¢mica de Sistemas MecÃ¢nicos" e AnimaÃ§Ã£o do Movimento da PartÃ­cula
 %
 % Autor: Samuel da Silva
 % Data: 05/setembro/09
@@ -8,67 +8,67 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clc;            % limpa a tela
-clear;          % deleta todas as variáveis na memória
+clear;          % deleta todas as variÃ¡veis na memÃ³ria
 
 %--------------------------------------------------------------------------
-% Parâmetros Geométricos e Físicos do Problema
+% ParÃ¢metros GeomÃ©tricos e FÃ­sicos do Problema
 %--------------------------------------------------------------------------
 
 h = 1400;       % Altura da haste [m]
 g = 9.8;        % Gravidade [m/s^2]
-Omega = 1;     % Rotação da base móvel B1 [rad/s]
+Omega = 1;     % RotaÃ§Ã£o da base mÃ³vel B1 [rad/s]
 
 N = 1000;               % Numero de amostras temporais
-T = 8;                  % Tempo da simulação [s]
-deltaT = T/(N-1);       % Passo de integração da equação do movimento
+T = 8;                  % Tempo da simulaÃ§Ã£o [s]
+deltaT = T/(N-1);       % Passo de integraÃ§Ã£o da equaÃ§Ã£o do movimento
 t = 0:deltaT:(N-1)*deltaT;  % Vetor tempo
 
 Theta1 = Omega*t;       % Deslocamento angular Theta1 [rad]
 Theta2 = pi/4;          % Angulo Theta2 constante [rad]
 
 %--------------------------------------------------------------------------
-% Equação do Movimento: ddotx - Omega^2*cos^2(Theta2)x=gsin(Theta2)
+% EquaÃ§Ã£o do Movimento: ddotx - Omega^2*cos^2(Theta2)x=gsin(Theta2)
 %--------------------------------------------------------------------------
 
-% Solução da EDO usando aproximação em série de Taylor de 1.º ordem (Método
+% SoluÃ§Ã£o da EDO usando aproximaÃ§Ã£o em sÃ©rie de Taylor de 1.Âº ordem (MÃ©todo
 % de Euler)
 
-% Inicializando vetores de deslocamento, velocidade e aceleração
+% Inicializando vetores de deslocamento, velocidade e aceleraÃ§Ã£o
 x = zeros(N,1);
 dotx = zeros(N,1);
 ddotx = zeros(N,1);
 
-% Condições iniciais
+% CondiÃ§Ãµes iniciais
 x(1) = 0;
 dotx(1) =0;
 ddotx(1) = g*sin(Theta2) + Omega*Omega*(cos(Theta2)*cos(Theta2))*x(1);
 
 xexata(1) = (g*sin(Theta2)/(Omega*Omega*cos(Theta2)*cos(Theta2)))*(cosh(Theta1(1)*cos(Theta2))-1);
 
-for i=2:N       % Abre um laço de cálculo de t=t_0+deltat até t=t_0+Ndeltat
+for i=2:N       % Abre um laÃ§o de cÃ¡lculo de t=t_0+deltat atÃ© t=t_0+Ndeltat
    
-    % Aproximação de x(i) e dotx(i) usando valores em i-1
+    % AproximaÃ§Ã£o de x(i) e dotx(i) usando valores em i-1
     
     x(i) = x(i-1)+deltaT*dotx(i-1);
     dotx(i) = dotx(i-1)+deltaT*ddotx(i-1);
     
     ddotx(i) = g*sin(Theta2) + Omega*Omega*(cos(Theta2)*cos(Theta2))*x(i);
     
-    % Solução exata (Analítica)
+    % SoluÃ§Ã£o exata (AnalÃ­tica)
     xexata(i) = (g*sin(Theta2)/(Omega*Omega*cos(Theta2)*cos(Theta2)))*(cosh(Theta1(i)*cos(Theta2))-1);
     
 end
 
-% Descrevendo os vetores deslocamento, velocidade e aceleração na base
+% Descrevendo os vetores deslocamento, velocidade e aceleraÃ§Ã£o na base
 % inercial
 
-B2rBA = [x zeros(N,1) zeros(N,1)]';         % vetor posição aproximada(trajetória na base B2)
-B2rBAex = [xexata' zeros(N,1) zeros(N,1)]';  % vetor posição exata (trajetória na base B2)
-IrOB = [0 h 0]';        % vetor posição de O até B no sistema inercial
+B2rBA = [x zeros(N,1) zeros(N,1)]';         % vetor posiÃ§Ã£o aproximada(trajetÃ³ria na base B2)
+B2rBAex = [xexata' zeros(N,1) zeros(N,1)]';  % vetor posiÃ§Ã£o exata (trajetÃ³ria na base B2)
+IrOB = [0 h 0]';        % vetor posiÃ§Ã£o de O atÃ© B no sistema inercial
 
 for i =1:N
     
-    % Matrizes de Transformação
+    % Matrizes de TransformaÃ§Ã£o
     
     T1 = [cos(Theta1(i))    0     -sin(Theta1(i));
                    0           1            0       ;
@@ -78,13 +78,13 @@ for i =1:N
                 sin(Theta2)    cos(Theta2)  0;
                 0                 0         1];
             
-    % Transformando trajetória da base móvel B2 para base inercial I
+    % Transformando trajetÃ³ria da base mÃ³vel B2 para base inercial I
     
-    IrOA(:,i) = IrOB + T1'*T2'*B2rBA(:,i);              % Trajetória base inercial aproximada
-    IrOAex(:,i) = IrOB + T1'*T2'*B2rBAex(:,i);          % Trajetória base inercial exata
+    IrOA(:,i) = IrOB + T1'*T2'*B2rBA(:,i);              % TrajetÃ³ria base inercial aproximada
+    IrOAex(:,i) = IrOB + T1'*T2'*B2rBAex(:,i);          % TrajetÃ³ria base inercial exata
 end
 
-% Plotando no Espaço Trajetória Aproximada e Exata
+% Plotando no EspaÃ§o TrajetÃ³ria Aproximada e Exata
 
 figure(1)
 plot3(IrOA(3,:),IrOA(1,:),IrOA(2,:)); grid on
@@ -96,22 +96,22 @@ saveas(1,'fig1.eps')
 hold on
 
 plot3(IrOAex(3,:),IrOAex(1,:),IrOAex(2,:),'r'); grid on
-legend('Trajetória Aproximada','Trajetória Exata')
-title('Trajetória realizada pela partícula A no sistema inercial')
+legend('TrajetÃ³ria Aproximada','TrajetÃ³ria Exata')
+title('TrajetÃ³ria realizada pela partÃ­cula A no sistema inercial')
 AZ = 163;
 EL = 32;
 view(AZ,EL);
 
 %--------------------------------------------------------------------------
-% Visualização no Movimento da Partícula - Animação (Existe inúmeras formas
-% de animar o movimento da partícula).
+% VisualizaÃ§Ã£o no Movimento da PartÃ­cula - AnimaÃ§Ã£o (Existe inÃºmeras formas
+% de animar o movimento da partÃ­cula).
 % Consulte help no Matlab dos comandos getframe, addframe, movie para maiores
 % detalhes
 %--------------------------------------------------------------------------
 
-numframe = 50;    % número de quadros
+numframe = 50;    % nÃºmero de quadros
 
-% Mecanismo na posição inicial
+% Mecanismo na posiÃ§Ã£o inicial
 %                        (4)
 %                           \
 %                            \
@@ -123,7 +123,7 @@ numframe = 50;    % número de quadros
 %                              |
 %       (1)-----------------(2)
     
-% Gravando o filme da animação    
+% Gravando o filme da animaÃ§Ã£o    
 mov = avifile('exemplo8.avi')
 
 figure(2)
@@ -148,7 +148,7 @@ for i=1:numframe
     l = cos(Theta2)*max(x);
    
     % Plotando mecanismo
-    % Matriz de transformação da base inercial para movel B1
+    % Matriz de transformaÃ§Ã£o da base inercial para movel B1
      T1 = [cos(Theta1(num))    0     -sin(Theta1(num));
                    0           1            0       ;
                sin(Theta1(num))   0          cos(Theta1(num))];
@@ -157,17 +157,17 @@ for i=1:numframe
      %Z1 = T1'*[0 0 h]';
      %Y1 = T1'*[0 h 0]';
 
-    % Coordenadas dos Nós do Mecanismo
-    index(1,:) = T1'*[0 0 0]';          % Nó 1
-    index(2,:) = T1'*[l 0 0]';          % Nó 2
-    index(3,:) = T1'*[l h-d 0]';        % Nó 3
-    index(4,:) = T1'*[0 h 0]';          % Nó 4
+    % Coordenadas dos NÃ³s do Mecanismo
+    index(1,:) = T1'*[0 0 0]';          % NÃ³ 1
+    index(2,:) = T1'*[l 0 0]';          % NÃ³ 2
+    index(3,:) = T1'*[l h-d 0]';        % NÃ³ 3
+    index(4,:) = T1'*[0 h 0]';          % NÃ³ 4
 
-    elemento(1,:) = [1 2];         % Elemento 1 entre nó 1 e 2
-    elemento(2,:) = [2 3];         % Elemento 2 entre nó 2 e 3
-    elemento(3,:) = [3 4];         % Elemento 4 entre nó 3 e 4
+    elemento(1,:) = [1 2];         % Elemento 1 entre nÃ³ 1 e 2
+    elemento(2,:) = [2 3];         % Elemento 2 entre nÃ³ 2 e 3
+    elemento(3,:) = [3 4];         % Elemento 4 entre nÃ³ 3 e 4
 
-    nele = 3;       % o mecanismo é composto por 3 barras
+    nele = 3;       % o mecanismo Ã© composto por 3 barras
     
     for j=1:nele
 
@@ -188,7 +188,7 @@ for i=1:numframe
 	hold off
     Traj(i) = getframe;
     pause(.1)
-    mov = addframe(mov,Traj(i));         % Salva a animação em um arquivo AVI
+    mov = addframe(mov,Traj(i));         % Salva a animaÃ§Ã£o em um arquivo AVI
 end
 
 mov = close(mov);
